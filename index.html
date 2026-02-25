@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EcoTrack</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<header>
+  <h1>🌱 EcoTrack</h1>
+  <nav>
+    <button onclick="showSection('pickup')">Pickup</button>
+    <button onclick="showSection('dashboard')">Dashboard</button>
+  </nav>
+</header>
+
+
+
+
+<section id="pickup" class="section">
+  <h2>Pickup Request</h2>
+
+  <input id="name" placeholder="Name">
+  <input id="address" placeholder="Address">
+
+  <select id="pickupWaste">
+    <option value="">Select Waste Type</option>
+    <option value="plastic">Plastic</option>
+    <option value="organic">Organic</option>
+    <option value="ewaste">E-Waste</option>
+  </select>
+
+  <button onclick="showDate()">Check Collection Date</button>
+
+  <p id="dateResult"></p>
+
+  <button onclick="requestPickup()">Request Pickup</button>
+  <p id="status"></p>
+</section>
+
+<section id="dashboard" class="section hidden">
+  <h2>Dashboard</h2>
+
+  <p id="points">Points: 0</p>
+
+  <h3>Upload Waste Evidence</h3>
+
+  <input type="file" id="mediaUpload" accept="image/*,video/*">
+  <br><br>
+  <button onclick="uploadMedia()">Upload</button>
+
+  <p id="uploadStatus"></p>
+</section>
+
+<script src="script.js"></script>
+</body>
+</html>

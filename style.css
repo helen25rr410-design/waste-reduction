@@ -1,0 +1,46 @@
+body{
+  font-family: Arial;
+  margin:0;
+  text-align:center;
+  background:#f4fff6;
+}
+
+header{
+  background:#2ecc71;
+  color:white;
+  padding:15px;
+}
+
+button{
+  margin:5px;
+  padding:10px 15px;
+  border:none;
+  background:#27ae60;
+  color:white;
+  border-radius:6px;
+  cursor:pointer;
+}
+
+.section{
+  padding:20px;
+}
+
+.hidden{
+  display:none;
+}
+input, select{
+  padding:10px;
+  margin:8px;
+  border-radius:6px;
+  border:1px solid #ccc;
+}
+
+#dateResult{
+  font-weight:bold;
+  color:#27ae60;
+}
+
+#uploadStatus{
+  color:#2c3e50;
+  font-weight:bold;
+}
