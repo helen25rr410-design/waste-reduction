@@ -16,8 +16,7 @@
 </header>
 
 
-
-
+<!-- PICKUP PAGE -->
 <section id="pickup" class="section">
   <h2>Pickup Request</h2>
 
@@ -32,13 +31,14 @@
   </select>
 
   <button onclick="showDate()">Check Collection Date</button>
-
   <p id="dateResult"></p>
 
   <button onclick="requestPickup()">Request Pickup</button>
   <p id="status"></p>
 </section>
 
+
+<!-- DASHBOARD PAGE -->
 <section id="dashboard" class="section hidden">
   <h2>Dashboard</h2>
 
@@ -48,11 +48,20 @@
 
   <input type="file" id="mediaUpload" accept="image/*,video/*">
   <br><br>
-  <button onclick="uploadMedia()">Upload</button>
 
+  <button onclick="uploadMedia()">Upload</button>
   <p id="uploadStatus"></p>
 </section>
 
+
+
+<!-- Firebase Libraries FIRST -->
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-storage-compat.js"></script>
+
+<!-- Your Script LAST -->
 <script src="script.js"></script>
+
 </body>
 </html>

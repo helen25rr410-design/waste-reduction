@@ -1,44 +1,59 @@
 
 // =====================================
-// ECOTRACK FINAL SCRIPT
+// FIREBASE SETUP (ONLY THIS VERSION)
 // =====================================
 
+const firebaseConfig = {
+  apiKey: "AIzaSyCNyHMhKDDnUPmczrUsSbaU6O2QIskveW4",
+  authDomain: "waste-reduction-ca922.firebaseapp.com",
+  projectId: "waste-reduction-ca922",
+  storageBucket: "waste-reduction-ca922.firebasestorage.app",
+  messagingSenderId: "134861993772",
+  appId: "1:134861993772:web:576c4a8afd53afb8c65e89",
+  measurementId: "G-4TL4SWRQR7"
+};
 
-// ===============================
-// POINTS SYSTEM
-// ===============================
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
 
-// Load saved points or start at 0
+// Services
+const db = firebase.firestore();
+const storage = firebase.storage();
+
+console.log("Firebase Connected Successfully");
+
+
+// =====================================
+// POINT SYSTEM
+// =====================================
+
 let points = Number(localStorage.getItem("points")) || 0;
-
-// Show points when page loads
 updatePoints();
 
 function updatePoints(){
-
-  // Save points
   localStorage.setItem("points", points);
 
-  // Update UI safely
   let el = document.getElementById("points");
   if(el){
     el.innerText = "Points: " + points;
   }
 }
 
+function addPoints(num){
+  points += num;
+  updatePoints();
+}
 
 
-// ===============================
-// NAVIGATION SYSTEM
-// ===============================
+// =====================================
+// PAGE NAVIGATION
+// =====================================
 
 function showSection(id){
 
-  // hide all sections
   document.querySelectorAll(".section")
     .forEach(sec => sec.classList.add("hidden"));
 
-  // show selected section
   let selected = document.getElementById(id);
   if(selected){
     selected.classList.remove("hidden");
@@ -46,10 +61,9 @@ function showSection(id){
 }
 
 
-
-// ===============================
-// PICKUP DATE CALCULATOR
-// ===============================
+// =====================================
+// COLLECTION DATE CALCULATOR
+// =====================================
 
 function showDate(){
 
@@ -65,12 +79,10 @@ function showDate(){
 
   let targetDay;
 
-  // Collection schedule
-  if(type === "plastic") targetDay = 1;   // Monday
-  if(type === "organic") targetDay = 3;   // Wednesday
-  if(type === "ewaste") targetDay = 5;    // Friday
+  if(type === "plastic") targetDay = 1;
+  if(type === "organic") targetDay = 3;
+  if(type === "ewaste") targetDay = 5;
 
-  // Calculate next collection day
   let diff = targetDay - todayDay;
   if(diff <= 0) diff += 7;
 
@@ -81,10 +93,9 @@ function showDate(){
 }
 
 
-
-// ===============================
-// PICKUP REQUEST SYSTEM
-// ===============================
+// =====================================
+// REQUEST PICKUP + SAVE TO FIREBASE
+// =====================================
 
 function requestPickup(){
 
@@ -97,19 +108,31 @@ function requestPickup(){
     return;
   }
 
-  document.getElementById("status").innerText =
-    "Requested → Confirmed → Collected";
+  db.collection("pickups").add({
+    name: name,
+    address: address,
+    waste: waste,
+    status: "Requested",
+    time: new Date()
+  })
+  .then(()=>{
 
-  // reward points
-  points += 10;
-  updatePoints();
+    document.getElementById("status").innerText =
+      "Pickup Requested Successfully";
+
+    addPoints(10);
+
+  })
+  .catch(err=>{
+    console.error(err);
+    alert("Error saving pickup request");
+  });
 }
 
 
-
-// ===============================
-// MEDIA UPLOAD SYSTEM
-// ===============================
+// =====================================
+// MEDIA UPLOAD TO FIREBASE STORAGE
+// =====================================
 
 function uploadMedia(){
 
@@ -121,13 +144,20 @@ function uploadMedia(){
     return;
   }
 
-  document.getElementById("uploadStatus").innerText =
-    "Uploaded successfully: " + file.name;
+  let storageRef = storage.ref("uploads/" + file.name);
 
-  // reward points
-  points += 5;
-  updatePoints();
+  storageRef.put(file)
+  .then(()=>{
 
-  // reset input
-  input.value = "";
+    document.getElementById("uploadStatus").innerText =
+      "Uploaded successfully: " + file.name;
+
+    addPoints(5);
+    input.value = "";
+
+  })
+  .catch(err=>{
+    console.error(err);
+    alert("Upload failed");
+  });
 }
